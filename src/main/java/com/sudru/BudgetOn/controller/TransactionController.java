@@ -38,5 +38,10 @@ public class TransactionController {
         transactionService.updateTransaction(dto);
         return new ApiResponse("updated",true);
     }
+    @DeleteMapping("/{id}")
+    public ApiResponse deleteTransaction(@PathVariable int id){
+        transactionService.deleteTransaction(id);
+        return new ApiResponse("Transaction Deleted Successfully.",true);
+    }
 
 }

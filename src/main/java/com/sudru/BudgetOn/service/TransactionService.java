@@ -44,4 +44,13 @@ public class TransactionService {
         transactionRepository.save(transaction);
 
     }
+
+    public void deleteTransaction(int id) {
+        int authenticatedUserId = userUtil.getCurrentLoggedInUser().getId();
+        Transaction t = transactionRepository.findById(id).orElseThrow(()-> new RuntimeException("Invalid Id"));
+        if(t.getUser().getId()!=authenticatedUserId){
+            throw new RuntimeException("Unauthorized");
+        }
+        transactionRepository.deleteById(id);
+    }
 }
