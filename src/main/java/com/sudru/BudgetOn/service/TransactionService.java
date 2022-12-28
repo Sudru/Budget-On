@@ -32,4 +32,16 @@ public class TransactionService {
         User user = userUtil.getCurrentLoggedInUser();
         return transactionRepository.getTransactionByUser(user).stream().map(a->modelMapper.map(a,TransactionDto.class)).collect(Collectors.toList());
     }
+
+    public void updateTransaction(TransactionDto dto) {
+        int authenticatedUserId = userUtil.getCurrentLoggedInUser().getId();
+        Transaction transaction = transactionRepository.findById(dto.getId()).orElseThrow(()-> new RuntimeException("Invalid transaction Id"));
+        if(transaction.getUser().getId()!=authenticatedUserId){
+            throw new RuntimeException("Unauthorized");
+        }
+        dto.setTimestamp(transaction.getTimestamp());
+        modelMapper.map(dto,transaction);
+        transactionRepository.save(transaction);
+
+    }
 }

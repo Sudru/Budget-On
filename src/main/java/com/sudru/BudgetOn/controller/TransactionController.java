@@ -17,7 +17,7 @@ import javax.validation.Valid;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @PostMapping("/new")
+    @PostMapping()
     public ResponseEntity<ApiResponse> addNewTransaction(@Valid @RequestBody TransactionDto dto, Errors errors){
         if (errors.getAllErrors().size() > 0) {
             return new ResponseEntity<>(new ApiResponse(errors.getAllErrors().get(0).getDefaultMessage(), false), HttpStatus.BAD_REQUEST);
@@ -25,9 +25,18 @@ public class TransactionController {
         transactionService.addTransaction(dto);
         return new ResponseEntity<>(new ApiResponse("Transaction Added",true),HttpStatus.OK);
     }
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<?> getAllTransactions(){
         return new ResponseEntity<>(transactionService.getAllTransactions(),HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ApiResponse updateTransaction(@Valid @RequestBody TransactionDto dto,Errors errors ){
+        if (errors.getAllErrors().size() > 0) {
+            return new ApiResponse(errors.getAllErrors().get(0).getDefaultMessage(), false);
+        }
+        transactionService.updateTransaction(dto);
+        return new ApiResponse("updated",true);
     }
 
 }
