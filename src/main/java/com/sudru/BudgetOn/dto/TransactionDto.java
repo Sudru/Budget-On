@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Data
 public class TransactionDto {
-
+    private int id;
     private double amount;
     private boolean isPending;
     @NotBlank(message = "Specify Sender or Receiver")
