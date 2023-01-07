@@ -2,7 +2,6 @@ package com.sudru.BudgetOn.service;
 
 
 import com.sudru.BudgetOn.dto.RegisterDto;
-import com.sudru.BudgetOn.entity.BudgetAmount;
 import com.sudru.BudgetOn.entity.User;
 import com.sudru.BudgetOn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class UserService {
         }
         user = new User();
         user = modelMapper.map(registerDto,User.class);
-        user.setBudget(new BudgetAmount());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         userRepository.save(user);
     }
