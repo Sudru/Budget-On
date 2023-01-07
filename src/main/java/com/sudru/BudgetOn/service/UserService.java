@@ -23,7 +23,7 @@ public class UserService {
         user = new User();
         user = modelMapper.map(registerDto,User.class);
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-        userRepository.save(user);
+        userRepository.saveNewUser(user.getName(),user.getUsername(),user.getPassword());
     }
 
 }

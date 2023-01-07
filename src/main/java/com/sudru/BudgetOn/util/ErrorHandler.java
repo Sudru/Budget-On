@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ErrorHandler {
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseEntity<ApiResponse> handler(Exception e) {
-        return new ResponseEntity<>(new ApiResponse(e.getMessage(), false), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponse(e.getLocalizedMessage(), false), HttpStatus.BAD_REQUEST);
     }
 }

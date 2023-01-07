@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS transaction (
                              transaction_type integer,
                              note varchar not null ,
                              timestamp timestamp,
+                             is_pending boolean not null,
                              user_id integer
 );
