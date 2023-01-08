@@ -20,7 +20,6 @@ public class UserService {
         if (user != null) {
             throw new RuntimeException("User already exists.");
         }
-        user = new User();
         user = modelMapper.map(registerDto,User.class);
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         userRepository.saveNewUser(user.getName(),user.getUsername(),user.getPassword());

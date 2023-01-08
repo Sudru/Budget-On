@@ -7,7 +7,6 @@ import com.sudru.BudgetOn.repository.TransactionRepository;
 import com.sudru.BudgetOn.util.UserUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -43,7 +42,7 @@ public class TransactionService {
         }
         dto.setTimestamp(transaction.getTimestamp());
         modelMapper.map(dto,transaction);
-//        transactionRepository.editTransaction(transaction.getTransactionType(),transaction.getSenderOrReceiver(),transaction.getAmount(),transaction.getNote(),transaction.isPending(),authenticatedUserId, Date.from(Instant.now()));
+        transactionRepository.editTransaction(transaction.getTransactionType().ordinal(),transaction.getSenderOrReceiver(),transaction.getAmount(),transaction.getNote(),transaction.isPending(),authenticatedUserId, transaction.getTimestamp(),transaction.getId());
 
     }
 

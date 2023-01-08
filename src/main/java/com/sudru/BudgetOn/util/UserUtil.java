@@ -10,8 +10,7 @@ public class UserUtil {
     private final UserRepository userRepository;
     public User getCurrentLoggedInUser(){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.getByUsername(email).orElseThrow();
-        return user;
+        return userRepository.getByUsername(email).orElseThrow();
 
     }
 }

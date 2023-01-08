@@ -6,9 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Data
 @NoArgsConstructor
@@ -19,10 +17,9 @@ public class RegisterDto {
 
     @Email(message = "Provide valid email.")
     private String username;
-    @Length(min = 8,message = "Password should contains at least 8 characters.")
+    @Length(min = 8, message = "Password should contains at least 8 characters.")
     private String password;
     private String confirmPassword;
-
 
 
 }
