@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,12 @@ public interface TransactionRepository extends JpaRepository<Transaction,Integer
     List<Transaction> getTransactionByUserId(int id);
 
     @Modifying
-    @Query(value = "insert into transaction(transaction_type,sender_or_receiver,amount,note,is_pending,userId,timestamp) values (?1,?2,?3,?4,?5,?6,?7)",nativeQuery = true)
-    void saveTransaction(TransactionType type, String senderOrReceiver, double amount, String note, boolean isPending, int userId, Date timestamp);
+    @Transactional
+    @Query(value = "insert into transaction(transaction_type,sender_or_receiver,amount,note,is_pending,user_id,timestamp) values (?1,?2,?3,?4,?5,?6,?7)",nativeQuery = true)
+    void addTransaction(int type, String senderOrReceiver, double amount, String note, boolean isPending, int userId, Date timestamp);
+
+    @Modifying
+    @Transactional
+    @Query(value = "delete from transaction where id=?1",nativeQuery = true)
+    void deleteTransaction(int id);
 }

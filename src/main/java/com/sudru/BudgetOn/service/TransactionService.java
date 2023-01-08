@@ -25,8 +25,8 @@ public class TransactionService {
 
     public void addTransaction(TransactionDto dto){
         Transaction transaction = modelMapper.map(dto, Transaction.class);
-        transaction.setUser(userUtil.getCurrentLoggedInUser());
-        transactionRepository.save(transaction);
+        int userId=userUtil.getCurrentLoggedInUser().getId();
+        transactionRepository.addTransaction(transaction.getTransactionType().ordinal(),transaction.getSenderOrReceiver(),transaction.getAmount(),transaction.getNote(),transaction.isPending(),userId, Date.from(Instant.now()));
 
     }
 
@@ -43,7 +43,7 @@ public class TransactionService {
         }
         dto.setTimestamp(transaction.getTimestamp());
         modelMapper.map(dto,transaction);
-        transactionRepository.saveTransaction(transaction.getTransactionType(),transaction.getSenderOrReceiver(),transaction.getAmount(),transaction.getNote(),transaction.isPending(),authenticatedUserId, Date.from(Instant.now()));
+//        transactionRepository.editTransaction(transaction.getTransactionType(),transaction.getSenderOrReceiver(),transaction.getAmount(),transaction.getNote(),transaction.isPending(),authenticatedUserId, Date.from(Instant.now()));
 
     }
 
@@ -53,6 +53,6 @@ public class TransactionService {
         if(t.getUser().getId()!=authenticatedUserId){
             throw new RuntimeException("Unauthorized");
         }
-        transactionRepository.deleteById(id);
+        transactionRepository.deleteTransaction(id);
     }
 }
