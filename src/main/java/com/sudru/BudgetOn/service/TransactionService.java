@@ -10,6 +10,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +32,7 @@ public class TransactionService {
 
     public List<TransactionDto> getAllTransactions() {
         User user = userUtil.getCurrentLoggedInUser();
-        return transactionRepository.getTransactionByUser(user).stream().map(a->modelMapper.map(a,TransactionDto.class)).collect(Collectors.toList());
+        return transactionRepository.getTransactionByUserId(user.getId()).stream().map(a->modelMapper.map(a,TransactionDto.class)).collect(Collectors.toList());
     }
 
     public void updateTransaction(TransactionDto dto) {
@@ -41,7 +43,7 @@ public class TransactionService {
         }
         dto.setTimestamp(transaction.getTimestamp());
         modelMapper.map(dto,transaction);
-        transactionRepository.save(transaction);
+        transactionRepository.saveTransaction(transaction.getTransactionType(),transaction.getSenderOrReceiver(),transaction.getAmount(),transaction.getNote(),transaction.isPending(),authenticatedUserId, Date.from(Instant.now()));
 
     }
 
