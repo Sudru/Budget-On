@@ -29,9 +29,9 @@ public class TransactionService {
 
     }
 
-    public List<TransactionDto> getAllTransactions() {
+    public List<TransactionDto> getAllTransactions(boolean pending) {
         User user = userUtil.getCurrentLoggedInUser();
-        return transactionRepository.getTransactionByUserId(user.getId()).stream().map(a->modelMapper.map(a,TransactionDto.class)).collect(Collectors.toList());
+        return transactionRepository.getTransactionByUserId(user.getId(),pending).stream().map(a->modelMapper.map(a,TransactionDto.class)).collect(Collectors.toList());
     }
 
     public void updateTransaction(TransactionDto dto) {
@@ -53,5 +53,10 @@ public class TransactionService {
             throw new RuntimeException("Unauthorized");
         }
         transactionRepository.deleteTransaction(id);
+    }
+
+    public String getSummary() {
+        int userId = userUtil.getCurrentLoggedInUser().getId();
+        return transactionRepository.getTransactionSummary(userId);
     }
 }

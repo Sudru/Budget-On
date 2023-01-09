@@ -26,8 +26,9 @@ public class TransactionController {
         return new ResponseEntity<>(new ApiResponse("Transaction Added",true),HttpStatus.OK);
     }
     @GetMapping()
-    public ResponseEntity<?> getAllTransactions(){
-        return new ResponseEntity<>(transactionService.getAllTransactions(),HttpStatus.OK);
+    public ResponseEntity<?> getAllTransactions(@RequestParam("pending")boolean
+                                                pending){
+        return new ResponseEntity<>(transactionService.getAllTransactions(pending),HttpStatus.OK);
     }
 
     @PutMapping
@@ -42,6 +43,10 @@ public class TransactionController {
     public ApiResponse deleteTransaction(@PathVariable int id){
         transactionService.deleteTransaction(id);
         return new ApiResponse("Transaction Deleted Successfully.",true);
+    }
+    @GetMapping("/summary")
+    public ResponseEntity<?> getSummary(){
+        return new ResponseEntity<>(transactionService.getSummary(),HttpStatus.OK);
     }
 
 }

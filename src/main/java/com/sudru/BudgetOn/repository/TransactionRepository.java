@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,Integer> {
-    @Query(value = "select * from transaction where user_id=?1",nativeQuery = true)
-    List<Transaction> getTransactionByUserId(int id);
+    @Query(value = "select * from transaction where is_pending=?2 and user_id=?1",nativeQuery = true)
+    List<Transaction> getTransactionByUserId(int id, boolean pending);
 
     @Modifying
     @Transactional
@@ -29,4 +29,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Integer
     @Transactional
     @Query(value = "update transaction set transaction_type=?1,sender_or_receiver=?2,amount=?3,note=?4,is_pending=?5,user_id=?6,timestamp=?7 where id=?8",nativeQuery = true)
     void editTransaction(int type, String senderOrReceiver, double amount, String note, boolean isPending, int userId, Date timestamp,int id);
+
+    @Query(value = "select sum(case when is_pending=false and transaction_type=0 then amount else 0 end) as income,sum(case when is_pending=false and transaction_type=1 then amount else 0 end) as expenditure,sum(case when is_pending=true and transaction_type=0 then amount else 0 end) as income_pending,sum(case when is_pending=true and transaction_type=1 then amount else 0 end) as expenditure_pending from transaction where user_id=?1",nativeQuery = true)
+    String getTransactionSummary(int id);
 }
