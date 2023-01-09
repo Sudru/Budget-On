@@ -6,15 +6,18 @@ import com.sudru.BudgetOn.entity.User;
 import com.sudru.BudgetOn.repository.TransactionRepository;
 import com.sudru.BudgetOn.util.UserUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;
@@ -55,8 +58,10 @@ public class TransactionService {
         transactionRepository.deleteTransaction(id);
     }
 
-    public String getSummary() {
+    public String[] getSummary() {
         int userId = userUtil.getCurrentLoggedInUser().getId();
-        return transactionRepository.getTransactionSummary(userId);
+        String s = transactionRepository.getTransactionSummary(userId);
+        log.info(Arrays.toString(s.split(",")));
+        return s.split(",");
     }
 }
